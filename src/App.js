@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import EXIF from "exif-js";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class extends React.Component {
+  getImageDetails = ({ target: imgNode }) => {
+    EXIF.getData(imgNode, function() {
+      const exifData = EXIF.getAllTags(imgNode);
+      console.log('exifData: ', exifData);
+    });
+  };
+
+  render() {
+    return (
+      <div className="App">
+        <h1>EXIF Test</h1>
+        <img
+          id="img1"
+          onClick={this.getImageDetails}
+          style={{ height: 240, cursor: "pointer" }}
+          src={require('./images/ppttestimage.jpg')}
+          alt="this is an alt for the pic"
+        />
+        <div>{JSON.stringify(this.state)}</div>
+      </div>
+    );
+  }
 }
-
-export default App;
